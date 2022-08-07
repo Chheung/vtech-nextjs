@@ -1,8 +1,14 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { Todo } from "@/commons";
+import {
+  addTodo,
+  getTodoList,
+  markTodoComplete,
+  removeTodo,
+  Todo,
+} from "@/commons";
 import styles from "@/styles/Home.module.css";
 import InputWithValidator from "@/components/InputWithValidator";
 import TodoBanner from "@/components/Pages/Home/TodoBanner";
@@ -16,12 +22,40 @@ const Home: NextPage = () => {
     formState: { errors },
   } = useForm();
 
-  const [todoList, settodoList] = useState<Todo[]>([]);
+  const [todoList, setTodoList] = useState<Todo[]>([]);
+  useEffect(() => {
+    initTodoList();
+  }, []);
 
-  const onSubmit = (data: any) => {
+  const initTodoList = async () => {
+    await getTodoList().then((res) => {
+      setTodoList(res);
+    });
+  };
+
+  const onSubmit = async (data: any) => {
     if (!data) return;
 
-    settodoList([{ todo: data.todoTitle }, ...todoList]);
+    await addTodo({ todo: data.todoTitle });
+    initTodoList();
+  };
+
+  const onRemoveTodo = async (item: Todo) => {
+    if (!item) return;
+
+    await removeTodo(item.id);
+    await initTodoList();
+  };
+
+  const onEditTodo = (item: Todo) => {
+    setTodoList(todoList.filter((t) => t.todo !== item.todo));
+  };
+
+  const onCompleteTodo = async (item: Todo) => {
+    if (!item) return;
+
+    await markTodoComplete(item.id);
+    initTodoList();
   };
 
   return (
@@ -57,8 +91,12 @@ const Home: NextPage = () => {
       </div>
       {todoList.reverse().map((item) => {
         return (
-          <div key={item.todo}>
-            <TodoBanner item={item}></TodoBanner>
+          <div key={item.id}>
+            <TodoBanner
+              item={item}
+              onRemove={onRemoveTodo}
+              onComplete={onCompleteTodo}
+            ></TodoBanner>
           </div>
         );
       })}
