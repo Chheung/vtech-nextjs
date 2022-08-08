@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Todo } from "@/commons";
+import InputWithValidator from "@/components/InputWithValidator";
+import { Controller, useForm } from "react-hook-form";
+import { TodoRegisterOptions } from "@/validators/TodoValidator";
 
 const TodoBanner = ({
   item,
@@ -11,13 +14,46 @@ const TodoBanner = ({
   onRemove?: Function;
   onComplete?: Function;
 }) => {
+  const formRegisterOptions = TodoRegisterOptions;
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const onEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const onSubmit = (data: any) => {
+    if (!data) return;
+
+    props.onEdit?.(item, data?.todoTitle);
+    setIsEditing(false);
+  };
+
+  const todo = isEditing ? (
+    <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="todoTitle"
+        control={control}
+        defaultValue={item.todo}
+        rules={formRegisterOptions.todoTitle}
+        render={({ field }) => (
+          <InputWithValidator {...field} error={errors.todoTitle} />
+        )}
+      />
+    </form>
+  ) : (
+    item.todo
+  );
+
   return (
-    <div
-      key={item.todo}
-      className="my-2 break-all flex justify-between px-5 py-2 border-2 border-grey-500 rounded-lg"
-      style={{ width: "500px" }}
-    >
-      <div style={{ maxWidth: "80%" }}>{item.todo}</div>
+    <div className="my-2 w-full max-w-lg break-all flex justify-between px-5 py-2 border-2 border-grey-500 rounded-lg">
+      <div className="w-full" style={{ maxWidth: "80%" }}>
+        {todo}
+      </div>
       <div>
         <div className="flex flex-col">
           <button
@@ -40,7 +76,7 @@ const TodoBanner = ({
             </svg>
           </button>
           <button
-            onClick={() => props.onEdit?.(item)}
+            onClick={onEdit}
             className="ml-3 mt-2 px-5 bg-blue-400 text-white bg-rounded rounded-lg"
           >
             <svg

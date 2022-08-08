@@ -21,6 +21,14 @@ export const addTodo = async (item: { todo: string }) => {
   return response;
 };
 
+export const updateTodo = async (id: number, item: { todo: string }) => {
+  const response = await patchRequest<Todo>(basePrefix + id, {
+    data: item,
+  });
+
+  return response;
+};
+
 export const markTodoComplete = async (id: number) => {
   const response = await patchRequest<Todo>(basePrefix + id + "/mark-complete");
 

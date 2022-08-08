@@ -8,6 +8,7 @@ import {
   markTodoComplete,
   removeTodo,
   Todo,
+  updateTodo,
 } from "@/commons";
 import styles from "@/styles/Home.module.css";
 import InputWithValidator from "@/components/InputWithValidator";
@@ -47,8 +48,11 @@ const Home: NextPage = () => {
     await initTodoList();
   };
 
-  const onEditTodo = (item: Todo) => {
-    setTodoList(todoList.filter((t) => t.todo !== item.todo));
+  const onEditTodo = async (item: Todo, newTodo: string) => {
+    if (!item || !newTodo) return;
+
+    await updateTodo(item.id, { todo: newTodo });
+    await initTodoList();
   };
 
   const onCompleteTodo = async (item: Todo) => {
@@ -91,13 +95,13 @@ const Home: NextPage = () => {
       </div>
       {todoList.reverse().map((item) => {
         return (
-          <div key={item.id}>
-            <TodoBanner
-              item={item}
-              onRemove={onRemoveTodo}
-              onComplete={onCompleteTodo}
-            ></TodoBanner>
-          </div>
+          <TodoBanner
+            key={item.id}
+            item={item}
+            onRemove={onRemoveTodo}
+            onComplete={onCompleteTodo}
+            onEdit={onEditTodo}
+          ></TodoBanner>
         );
       })}
     </div>
