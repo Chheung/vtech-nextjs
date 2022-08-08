@@ -63,9 +63,9 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center mt-20">
+    <div className="flex flex-col items-center mt-20 mx-5">
       <h1 className="text-3xl">Todo list</h1>
-      <div className={styles.todoForm + " flex mt-5"}>
+      <div className={"w-full max-w-2xl flex mt-5"}>
         <form
           id="todoForm"
           className="w-full"
@@ -85,7 +85,7 @@ const Home: NextPage = () => {
         <button
           className={
             styles.addButton +
-            " mt-2 ml-2 px-10 bg-blue-400 text-white bg-rounded rounded-lg"
+            "w-full max-w-md max-h-11 mt-2 ml-2 px-10 bg-blue-400 text-white bg-rounded rounded-lg"
           }
           type="submit"
           form="todoForm"
