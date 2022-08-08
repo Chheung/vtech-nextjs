@@ -93,7 +93,7 @@ const Home: NextPage = () => {
           Add
         </button>
       </div>
-      {todoList.reverse().map((item) => {
+      {todoList.map((item) => {
         return (
           <TodoBanner
             key={item.id}
