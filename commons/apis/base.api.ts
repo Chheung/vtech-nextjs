@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const baseApiUrl = "https://vtech-nestjs.herokuapp.com/";
+const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
 
 export const request = async <T>(
   configs: AxiosRequestConfig<any>
