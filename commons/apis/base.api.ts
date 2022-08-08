@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const baseUrl = "http://localhost:3000/";
+const baseApiUrl = "https://vtech-nestjs.herokuapp.com/";
 
 export const request = async <T>(
   configs: AxiosRequestConfig<any>
@@ -15,7 +15,7 @@ export const getRequest = async <T>(
 ): Promise<T> => {
   const data = await request<T>({
     method: "GET",
-    url: baseUrl + endpoint,
+    url: baseApiUrl + endpoint,
     ...configs,
   });
 
@@ -28,7 +28,7 @@ export const postRequest = async <T>(
 ): Promise<T> => {
   const data = await request<T>({
     method: "POST",
-    url: baseUrl + endpoint,
+    url: baseApiUrl + endpoint,
     ...configs,
   });
 
@@ -41,7 +41,7 @@ export const patchRequest = async <T>(
 ): Promise<T> => {
   const data = await request<T>({
     method: "PATCH",
-    url: baseUrl + endpoint,
+    url: baseApiUrl + endpoint,
     ...configs,
   });
 
@@ -54,7 +54,7 @@ export const updateRequest = async <T>(
 ): Promise<T> => {
   const data = await request<T>({
     method: "UPDATE",
-    url: baseUrl + endpoint,
+    url: baseApiUrl + endpoint,
     ...configs,
   });
 
@@ -67,7 +67,7 @@ export const deleteRequest = async <T>(
 ): Promise<T> => {
   const data = await request<T>({
     method: "DELETE",
-    url: baseUrl + endpoint,
+    url: baseApiUrl + endpoint,
     ...configs,
   });
 

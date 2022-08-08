@@ -4,7 +4,6 @@ import {
   getRequest,
   patchRequest,
   postRequest,
-  updateRequest,
 } from "./base.api";
 
 const basePrefix = "todo/";
